@@ -108,7 +108,7 @@ class StringClusterMap(PluginForm):
         s = []
         map(lambda x: s.append(x.frm), idautils.XrefsTo(ea))
         return s
-    
+
     def funXrefs(self):
         res = {}
         for s in idautils.Strings():
@@ -119,7 +119,7 @@ class StringClusterMap(PluginForm):
             if not s_xrefs_eas:
                 dprint("no xref found for %s" %(s_v))
                 s_xrefs_eas = [s_ea]
-    
+
             # same string can be xref'ed by more than one function
             for fs_ea in s_xrefs_eas:
                 dprint("looking for function of %x" %(fs_ea))
@@ -337,7 +337,7 @@ class ida_string_cluster_plugin(idaapi.plugin_t):
 
     def init(self):
         return idaapi.PLUGIN_OK
-    
+
     def run(self, arg):
         plg = StringClusterMap()
         plg.Show("StringCluster")
