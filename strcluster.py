@@ -10,6 +10,7 @@
 import re
 
 import idautils
+import ida_kernwin
 import idc
 import idaapi
 from idaapi import PluginForm
@@ -59,39 +60,39 @@ class IdaString():
 class StringClusterMap(PluginForm):
     def getIcon(self):
         icon = (
-            '0000010001001010000001002000680400001600000028000000100000002000000001'
-            '0020000000000000040000130b0000130b00000000000000000000000000000773e600'
-            '0577df000877dd060477df490277e0a70277e0e30277e0fb0277e0fb0277e0e30277e0'
-            'a70377e0490577e0060377e1000175f00000000000000000000377e0000577df180377'
-            'e0920277e0ed0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0ed02'
-            '77e0920377e1180277e100000000000577df000577df180277e0b10177e0ff0177e0ff'
-            '0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0'
-            'b10377e1180377e1000174de070176df920076e0ff0077e0ff0177e0ff0177e0ff0177'
-            'e0ff0076e0ff0076e0ff0177e0ff0177e0ff0177e0ff0077e0ff0076e0ff0176e09202'
-            '76e107127fe0481983e2ee1f87e3ff0d7de1ff0076e0ff0077e0ff067ae1ff1d86e3ff'
-            '1a84e3ff077ae1ff0177e0ff0076e0ff0e7ee1ff1e87e3ff1581e2ee0a7be1483592e4'
-            'a759a6e9ff4fa0e8ff66adeaff1e86e3ff0b7ce1ff60a9e9ff57a5e9ff56a4e9ff459b'
-            'e7ff0277e0ff288ce4ff68aeeaff51a1e8ff56a4e8ff2389e3a70578e0e40177e0ff00'
-            '72dfff499de7ff4fa1e8ff3c96e6ff53a3e8ff0074dfff0075e0ff0579e0ff0478e0ff'
-            '6cb0ebff268be4ff0075e0ff0378e0ff0478e0e40176e0fb1481e2ff439ae7ff7bb8ec'
-            'ff2a8ce4ff5da8eaff63abeaff3793e5ff3894e6ff3392e5ff1481e2ff73b4edff0b7c'
-            'e1ff0177e0ff0177e0ff0277e0fb2c8de4fb76b5ecff50a1e8ff1e86e3ff0075e0ff59'
-            'a6e9ff63abeaff3692e5ff3793e5ff76b5ecff2389e3ff73b4ecff0d7de1ff0077e0ff'
-            '0077e0ff0177e0fb5ea8e9e455a4e8ff0075e0ff0b7ce1ff0679e0ff3090e5ff59a6e9'
-            'ff0377e0ff1380e2ff62abe9ff0c7ce1ff65aceaff3693e5ff0478e0ff0d7de1ff077a'
-            'e1e42489e2a75ba7e9ff59a5e9ff5aa6e9ff1983e2ff0578e0ff489de7ff5da8eaff5f'
-            'a9eaff2c8ee4ff0075e0ff1a84e2ff60aaeaff5ba6e9ff57a4e9ff1f86e3a70075df48'
-            '0478e0ee0e7ee1ff087be1ff0177e0ff0177e0ff0177e0ff0c7de1ff087be1ff0076e0'
-            'ff0177e0ff0076e0ff0479e0ff0e7ee1ff087ae1ee0377e0480777de070377e0920177'
-            'e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff01'
-            '77e0ff0177e0ff0177e0ff0277e0920477e1070577df000577df180277e0b10177e0ff'
-            '0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0'
-            'ff0277e0b10377e1180377e100000000000377e0000577df180377e0920277e0ed0177'
-            'e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0ed0277e0920377e11802'
-            '77e10000000000000000000773e6000577df000877dd060477df490277e0a70277e0e3'
-            '0277e0fb0277e0fb0277e0e30277e0a70377e0490676e0060377e1000174f300000000'
-            '00e0070000c00300008001000000000000000000000000000000000000000000000000'
-            '00000000000000000000000000000000000080010000c0030000e0070000')
+            b'0000010001001010000001002000680400001600000028000000100000002000000001'
+            b'0020000000000000040000130b0000130b00000000000000000000000000000773e600'
+            b'0577df000877dd060477df490277e0a70277e0e30277e0fb0277e0fb0277e0e30277e0'
+            b'a70377e0490577e0060377e1000175f00000000000000000000377e0000577df180377'
+            b'e0920277e0ed0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0ed02'
+            b'77e0920377e1180277e100000000000577df000577df180277e0b10177e0ff0177e0ff'
+            b'0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0'
+            b'b10377e1180377e1000174de070176df920076e0ff0077e0ff0177e0ff0177e0ff0177'
+            b'e0ff0076e0ff0076e0ff0177e0ff0177e0ff0177e0ff0077e0ff0076e0ff0176e09202'
+            b'76e107127fe0481983e2ee1f87e3ff0d7de1ff0076e0ff0077e0ff067ae1ff1d86e3ff'
+            b'1a84e3ff077ae1ff0177e0ff0076e0ff0e7ee1ff1e87e3ff1581e2ee0a7be1483592e4'
+            b'a759a6e9ff4fa0e8ff66adeaff1e86e3ff0b7ce1ff60a9e9ff57a5e9ff56a4e9ff459b'
+            b'e7ff0277e0ff288ce4ff68aeeaff51a1e8ff56a4e8ff2389e3a70578e0e40177e0ff00'
+            b'72dfff499de7ff4fa1e8ff3c96e6ff53a3e8ff0074dfff0075e0ff0579e0ff0478e0ff'
+            b'6cb0ebff268be4ff0075e0ff0378e0ff0478e0e40176e0fb1481e2ff439ae7ff7bb8ec'
+            b'ff2a8ce4ff5da8eaff63abeaff3793e5ff3894e6ff3392e5ff1481e2ff73b4edff0b7c'
+            b'e1ff0177e0ff0177e0ff0277e0fb2c8de4fb76b5ecff50a1e8ff1e86e3ff0075e0ff59'
+            b'a6e9ff63abeaff3692e5ff3793e5ff76b5ecff2389e3ff73b4ecff0d7de1ff0077e0ff'
+            b'0077e0ff0177e0fb5ea8e9e455a4e8ff0075e0ff0b7ce1ff0679e0ff3090e5ff59a6e9'
+            b'ff0377e0ff1380e2ff62abe9ff0c7ce1ff65aceaff3693e5ff0478e0ff0d7de1ff077a'
+            b'e1e42489e2a75ba7e9ff59a5e9ff5aa6e9ff1983e2ff0578e0ff489de7ff5da8eaff5f'
+            b'a9eaff2c8ee4ff0075e0ff1a84e2ff60aaeaff5ba6e9ff57a4e9ff1f86e3a70075df48'
+            b'0478e0ee0e7ee1ff087be1ff0177e0ff0177e0ff0177e0ff0c7de1ff087be1ff0076e0'
+            b'ff0177e0ff0076e0ff0479e0ff0e7ee1ff087ae1ee0377e0480777de070377e0920177'
+            b'e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff01'
+            b'77e0ff0177e0ff0177e0ff0277e0920477e1070577df000577df180277e0b10177e0ff'
+            b'0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0'
+            b'ff0277e0b10377e1180377e100000000000377e0000577df180377e0920277e0ed0177'
+            b'e0ff0177e0ff0177e0ff0177e0ff0177e0ff0177e0ff0277e0ed0277e0920377e11802'
+            b'77e10000000000000000000773e6000577df000877dd060477df490277e0a70277e0e3'
+            b'0277e0fb0277e0fb0277e0e30277e0a70377e0490676e0060377e1000174f300000000'
+            b'00e0070000c00300008001000000000000000000000000000000000000000000000000'
+            b'00000000000000000000000000000000000080010000c0030000e0070000')
         image = QtGui.QImage()
         image.loadFromData(QtCore.QByteArray.fromHex(icon))
         pixmap = QtGui.QPixmap()
@@ -123,8 +124,8 @@ class StringClusterMap(PluginForm):
             for fs_ea in s_xrefs_eas:
                 dprint("looking for function of %x" %(fs_ea))
 
-                f_name = idc.GetFunctionName(fs_ea)
-                f_ea = idc.GetFunctionAttr(fs_ea, idc.FUNCATTR_START)
+                f_name = idc.get_func_name(fs_ea)
+                f_ea = idc.get_func_attr(fs_ea, idc.FUNCATTR_START)
                 if not f_name or f_name == '': f_name = NO_FUNC
                 if f_ea in res:
                     res[f_ea]['strings'][s_v] = IdaString(s_v, s_ea, fs_ea)
@@ -178,12 +179,12 @@ class StringClusterMap(PluginForm):
             self.filter_regex = None
 
         res_strs = 0
-        for idx in xrange(self.model.rowCount()):
+        for idx in range(self.model.rowCount()):
             item = self.model.item(idx)
             n_strings = item.rowCount()
             hide = True if search_text != "" else False
 
-            for c_idx in xrange(n_strings):
+            for c_idx in range(n_strings):
                 hide_row = self.hidecheckb.isChecked()
                 c_item1 = item.child(c_idx, XREF_COLUMN)
                 c_item2 = item.child(c_idx, STR_COLUMN)
@@ -216,7 +217,7 @@ class StringClusterMap(PluginForm):
             return
 
         if ea != -1:
-            idc.Jump(ea)
+            ida_kernwin.jumpto(ea)
 
     def PopulateForm(self):
         self.parent.setWindowIcon(self.getIcon())
@@ -241,7 +242,7 @@ class StringClusterMap(PluginForm):
         self.view.setUniformRowHeights(True)
         res_strs = 0
         parent = None
-        for idx, (f_ea, fi) in enumerate(self.items.iteritems()):
+        for idx, (f_ea, fi) in enumerate(self.items.items()):
             fun_ea = f_ea
             fun_name = fi['name']
             fun_strs = len(fi['strings'])
@@ -250,7 +251,7 @@ class StringClusterMap(PluginForm):
             parent = StringItem('%s (%d)' %(fun_name, fun_strs), fun_ea)
             parent.setEditable(False)
 
-            for (s_v, s) in fi['strings'].iteritems():
+            for (s_v, s) in fi['strings'].items():
                 ilist = [StringItem('', -1), StringItem('%x' %(s.xref), s.xref), StringItem(s_v, s.ea)]
                 for i in ilist: i.setEditable(False)
                 parent.appendRow(ilist)
