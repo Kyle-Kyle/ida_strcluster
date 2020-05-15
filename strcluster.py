@@ -105,9 +105,8 @@ class StringClusterMap(PluginForm):
         self.PopulateForm()
 
     def xrefsTo(self, ea):
-        s = []
-        map(lambda x: s.append(x.frm), idautils.XrefsTo(ea))
-        return s
+        s = map(lambda x: x.frm, idautils.XrefsTo(ea))
+        return list(s)
 
     def funXrefs(self):
         res = {}
